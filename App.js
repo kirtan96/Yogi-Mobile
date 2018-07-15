@@ -1,8 +1,8 @@
-import {CONTACT, DEALS, HOME} from './util/Constants';
+import {CONTACT, DEALS, HOME, FAVORITES} from './util/Constants';
 import {Ionicons} from '@expo/vector-icons';
 import MenuBar from './components/MenuBar';
 import React from 'react';
-import { ScrollView, StyleSheet, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import { AsyncStorage, ScrollView, StyleSheet, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import DealsView from './components/DealsView';
 import HomeView from './components/HomeView';
 import ContactView from './components/ContactView';
@@ -12,8 +12,13 @@ export default class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      selected: CONTACT,
+      selected: HOME,
     }
+    value = AsyncStorage.getItem(FAVORITES).then((value) => {
+      if (value === null) {
+        AsyncStorage.setItem(FAVORITES, JSON.stringify('{}'))
+      }
+    })
   }
 
   updateSelected(selected) {
